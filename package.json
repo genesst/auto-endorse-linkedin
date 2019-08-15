@@ -1,0 +1,16 @@
+{
+  "name": "auto-endorse-linkedin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "puppeteer": "^1.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Eugene Starodedov <euge.starr@gmail.com>",
+  "license": "ISC"
+}
