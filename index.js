@@ -11,10 +11,18 @@ const endorse = async ({ person, page }) => {
     await page.waitFor(500);
   }
 
-  await page.waitFor('button[aria-controls="skill-categories-expanded"]');
+  try {
+    await page.waitForSelector('button[aria-controls="skill-categories-expanded"]', { timeout: 1000 });
+  } catch (e) {
+    return;
+  }
+
   await page.click('button[aria-controls="skill-categories-expanded"]');
 
   const buttons = await page.$$('button.pv-skill-entity__featured-endorse-button-shared[aria-pressed="false"]');
+  await page.evaluate(_ => {
+    window.scrollBy(0, -window.innerHeight);
+  });
   for (let button of buttons) {
     await button.click();
     await page.waitFor(2000);
@@ -27,7 +35,6 @@ const endorse = async ({ person, page }) => {
   try {
     const page = await browser.newPage();
     await page.goto('https://linkedin.com');
-    await page.screenshot({ path: 'example.png' });
 
     await page.waitFor('input[name="session_key"]');
     await page.type('input[name="session_key"]', process.env.EMAIL);
@@ -41,10 +48,9 @@ const endorse = async ({ person, page }) => {
     for (let person of people) {
       await endorse({ person, page });
     }
-
-    await browser.close();
   } catch (e) {
-    await browser.close();
     console.log('Error:', e.stack);
   }
+
+  await browser.close();
 })();
